@@ -1,0 +1,81 @@
+<mat-form-field class="searchTable">
+    <mat-label>
+        <mat-icon style="width: 25px;">search</mat-icon>Buscar Usuario</mat-label>
+    <input matInput #input (keyup)="buscarUsuario(input.value)" #target>
+</mat-form-field>
+
+<button (click)="addUsuario()" style="float: right;" mat-fab color="warn">
+    <mat-icon>add</mat-icon>
+</button>
+<br><br>
+
+<div class="mat-elevation-z8">
+    <table mat-table #table [dataSource]="usuarios">
+
+        <!-- Imagen Column -->
+        <ng-container matColumnDef="imagen">
+            <th mat-header-cell *matHeaderCellDef> Imagen </th>
+            <td style="width: 70px;" mat-cell *matCellDef="let usuario">
+                <img [src]="usuario.img | imagen" class="avatar">
+            </td>
+        </ng-container>
+
+        <!-- Correo Column -->
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Correo </th>
+            <td mat-cell *matCellDef="let usuario"> {{usuario.email}} </td>
+        </ng-container>
+
+        <!-- Nombre Column -->
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let usuario"> {{usuario.nombre}} </td>
+        </ng-container>
+
+        <!-- Rol Column -->
+        <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef> Rol </th>
+            <td mat-cell *matCellDef="let usuario"> {{usuario.role}} </td>
+        </ng-container>
+
+        <!-- Auth Column -->
+        <ng-container matColumnDef="auth">
+            <th mat-header-cell *matHeaderCellDef> Auth </th>
+            <td mat-cell *matCellDef="let usuario">
+                <mat-chip-list>
+                    <mat-chip *ngIf="usuario.google" color="warn" selected>Google</mat-chip>
+                    <mat-chip *ngIf="!usuario.google" color="accent" selected>Normal</mat-chip>
+                </mat-chip-list>
+            </td>
+        </ng-container>
+
+        <!-- Icono1 Column -->
+        <ng-container matColumnDef="icono1">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let usuario">
+                <mat-icon color="accent" (click)="editUsuario(usuario._id)">edit</mat-icon>
+            </td>
+        </ng-container>
+
+        <!-- Icono2 Column -->
+        <ng-container matColumnDef="icono2">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let usuario">
+                <mat-icon color="warn" (click)="borrarUsuario(usuario)">delete_outline</mat-icon>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let usuario; columns: displayedColumns;">
+        </tr>
+    </table>
+
+    <div class="paginator">
+        <mat-icon (click)="cambiarDesde(+6)" class="iconRightPaginator">keyboard_arrow_right</mat-icon>
+        <mat-icon (click)="cambiarDesde(-6)" class="iconLeftPaginator">keyboard_arrow_left</mat-icon>
+        <div class="numberPaginator">
+            {{desde + 1}} - {{usuarios.length + desde}} de {{totalRegistros}}
+        </div>
+    </div>
+
+</div>
